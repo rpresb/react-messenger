@@ -1,4 +1,4 @@
-import { LOGIN_START } from "../actions/AuthActions";
+import { LOGIN_START, LOGIN_FAILED, LOGIN_SUCCESS } from "../actions/AuthAction";
 
 const INITIAL_STATE = {
   user: undefined,
@@ -11,8 +11,21 @@ export default (state: any = INITIAL_STATE, action: any) => {
     case LOGIN_START:
       return {
         ...state,
-        loading: true
+        loading: true,
+        error: undefined
       };
+    case LOGIN_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload
+      }
     default:
       return state;
   }

@@ -1,9 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-const Home = () => {
+const Home = (props: any) => {
   return (
-    <div>Home</div>
+    <div>
+      <h1>Home</h1>
+      {!props.user && props.isAppLoaded && <Link to="/login">Login</Link>}
+    </div>
+
   );
 };
 
-export default Home;
+const mapStateToProps = ({ auth, app }: any) => {
+  const { user } = auth;
+  const { isAppLoaded } = app;
+  return { user, isAppLoaded };
+};
+
+export default connect(mapStateToProps)(Home);

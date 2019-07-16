@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from './scenes/Home';
 import Login from './scenes/Login';
+import Register from './scenes/Register';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { loginSuccess } from './actions/AuthAction';
@@ -20,6 +21,7 @@ const AppRouter = (props: any) => {
     <Router>
       <Route path="/" exact component={Home} />
       <Route path="/login" exact component={Login} />
+      <Route path="/register" exact component={Register} />
     </Router>
   );
 };

@@ -1,19 +1,26 @@
-import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { connect } from "react-redux";
+import { Grid } from "semantic-ui-react";
+import ContactList from "../components/ContactList";
+import { Redirect } from "react-router";
 
 const Home = (props: any) => {
-  return (
-    <div>
-      <h1>Home</h1>
-      {!props.user && props.isAppLoaded && 
-        <Fragment>
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
-        </Fragment>
-      }
-    </div>
 
+  if (!props.user && props.isAppLoaded) {
+    return (
+      <Redirect to="/login" />
+    );
+  }
+
+  return (
+    <Grid divided>
+      <Grid.Column width={4}>
+        <ContactList />
+      </Grid.Column>
+      <Grid.Column width={8}>
+        Message here
+      </Grid.Column>
+    </Grid>
   );
 };
 

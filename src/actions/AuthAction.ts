@@ -3,6 +3,7 @@ import firebase from "firebase";
 export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGOUT = 'LOGOUT';
 
 export const loginUser = (email: string, password: string) => async (dispatch: Function) => {
   dispatch({ type: LOGIN_START });
@@ -23,3 +24,8 @@ export const loginSuccess = (user: firebase.User) => {
     payload: user
   };
 }
+
+export const logoutUser = () => async (dispatch: Function) => {
+  await firebase.auth().signOut();
+  dispatch({ type: LOGOUT });
+};

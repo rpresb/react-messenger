@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { registerUser } from "../actions/RegisterAction";
 import { withRouter, Redirect } from "react-router";
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { Link } from "react-router-dom";
 
 const Register = (props: any) => {
   const [email, setEmail] = useState("");
@@ -26,7 +28,11 @@ const Register = (props: any) => {
 
   const renderError = () => {
     if (props.error) {
-      return <div>{props.error}</div>;
+      return (
+        <Message negative>
+          <Message.Header>{props.error}</Message.Header>
+        </Message>
+      );
     }
 
     return null;
@@ -37,34 +43,54 @@ const Register = (props: any) => {
   }
 
   return (
-    <div>
-      <h1>Registration</h1>
+    <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Header as='h2' color='teal' textAlign='center'>
+          <Image src='/logo.png' /> Sign-up to your account
+        </Header>
+        <Form size='large'>
+          <Segment stacked>
+            <Form.Input
+              fluid
+              icon='user'
+              iconPosition='left'
+              placeholder='E-mail address'
+              value={email}
+              onChange={onEmailChange}
+            />
+            <Form.Input
+              fluid
+              icon='lock'
+              iconPosition='left'
+              placeholder='Password'
+              type='password'
+              value={password}
+              onChange={onPasswordChange}
+            />
 
-      <div>
-        <label htmlFor="email">E-mail:</label>
-        <input type="text" id="email" value={email} onChange={onEmailChange} />
-      </div>
+            <Form.Input
+              fluid
+              icon='lock'
+              iconPosition='left'
+              placeholder='Password confirmation'
+              type='password'
+              value={repeatPassword}
+              onChange={onRepeatPasswordChange}
+            />
 
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" value={password} onChange={onPasswordChange} />
-      </div>
+            <Button color='teal' fluid size='large' onClick={performRegistration} loading={props.loading}>
+              Sign up
+            </Button>
 
-      <div>
-        <label htmlFor="repeat_password">Repeat Password:</label>
-        <input type="password" id="repeat_password" value={repeatPassword} onChange={onRepeatPasswordChange} />
-      </div>
+            {renderError()}
 
-      <div>
-        <button onClick={performRegistration}>Submit</button>
-      </div>
-
-      {props.loading &&
-        <div>Loading...</div>
-      }
-
-      {renderError()}
-    </div>
+          </Segment>
+        </Form>
+        <Message>
+          Already have an account? <Link to="/login">Sign In</Link>
+        </Message>
+      </Grid.Column>
+    </Grid>
   );
 };
 
@@ -74,4 +100,4 @@ const mapStateToProps = ({ register, auth }: any) => {
 
 const registerWithRouter = withRouter(Register);
 
-export default connect(mapStateToProps, {registerUser})(registerWithRouter);
+export default connect(mapStateToProps, { registerUser })(registerWithRouter);

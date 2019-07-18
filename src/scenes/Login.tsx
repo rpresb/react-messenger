@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { loginUser } from "../actions/AuthAction";
 import { withRouter, Redirect } from "react-router";
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { Link } from "react-router-dom";
 
 const Login = (props: any) => {
   const [email, setEmail] = useState("");
@@ -21,7 +23,11 @@ const Login = (props: any) => {
 
   const renderError = () => {
     if (props.error) {
-      return <div>{props.error}</div>;
+      return (
+        <Message negative>
+          <Message.Header>{props.error}</Message.Header>
+        </Message>
+      );
     }
 
     return null;
@@ -32,29 +38,43 @@ const Login = (props: any) => {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
+    <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Header as='h2' color='teal' textAlign='center'>
+          <Image src='/logo.png' /> Log-in to your account
+        </Header>
+        <Form size='large'>
+          <Segment stacked>
+            <Form.Input
+              fluid
+              icon='user'
+              iconPosition='left'
+              placeholder='E-mail address'
+              value={email}
+              onChange={onEmailChange}
+            />
+            <Form.Input
+              fluid
+              icon='lock'
+              iconPosition='left'
+              placeholder='Password'
+              type='password'
+              value={password} onChange={onPasswordChange}
+            />
 
-      <div>
-        <label htmlFor="email">E-mail:</label>
-        <input type="text" id="email" value={email} onChange={onEmailChange} />
-      </div>
+            <Button color='teal' fluid size='large' onClick={performLogin} loading={props.loading}>
+              Login
+            </Button>
 
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" value={password} onChange={onPasswordChange} />
-      </div>
+            {renderError()}
 
-      <div>
-        <button onClick={performLogin}>Login</button>
-      </div>
-
-      {props.loading &&
-        <div>Loading...</div>
-      }
-
-      {renderError()}
-    </div>
+          </Segment>
+        </Form>
+        <Message>
+          New to us? <Link to="/register">Sign Up</Link>
+        </Message>
+      </Grid.Column>
+    </Grid>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Menu, Container, Image } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/AuthAction";
@@ -25,7 +25,10 @@ const NavBar = (props: any) => {
         }
 
         {props.user && props.isAppLoaded &&
-          <Menu.Item position="right" as='a' onClick={onSignOut}>Sign Out</Menu.Item>
+          <Fragment>
+            <Menu.Item as='a' onClick={() => props.history.push('/contacts')}>Contacts</Menu.Item>
+            <Menu.Item position="right" as='a' onClick={onSignOut}>Sign Out</Menu.Item>
+          </Fragment>
         }
       </Container>
     </Menu>

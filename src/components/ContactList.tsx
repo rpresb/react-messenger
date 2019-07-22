@@ -1,5 +1,6 @@
 import React from "react";
 import { List, Label } from 'semantic-ui-react'
+import { connect } from "react-redux";
 
 const ContactList = () => {
   return (
@@ -26,4 +27,9 @@ const ContactList = () => {
   );
 };
 
-export default ContactList;
+const mapStateToProps = ({ contact }: any) => {
+  const { loading, error } = contact;
+  return { loading, error };
+};
+
+export default connect(mapStateToProps)(ContactList);

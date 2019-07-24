@@ -16,8 +16,4 @@ const Home = (props: any) => {
   );
 };
 
-const mapStateToProps = ({ }: any) => {
-  return {};
-};
-
-export default connect(mapStateToProps)(Home);
+export default connect()(Home);

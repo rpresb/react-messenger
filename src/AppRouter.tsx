@@ -5,12 +5,12 @@ import Login from './scenes/Login';
 import Register from './scenes/Register';
 import Contacts from './scenes/Contacts';
 import { connect } from 'react-redux';
-import firebase from 'firebase';
 import { loginSuccess } from './actions/AuthAction';
 import { appLoaded } from './actions/AppAction';
 import NavBar from './components/NavBar';
 import PrivateRoute from './components/PrivateRoute';
 import { Container } from 'semantic-ui-react';
+import firebase from 'firebase/app';
 
 const AppRouter = ({ isAppLoaded, appLoaded, loginSuccess }: any) => {
   firebase.auth().onAuthStateChanged((user) => {

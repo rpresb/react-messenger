@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 import 'semantic-ui-css/semantic.min.css'
+import './index.css';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBVeg8QxmxuD0c7vnFZMgBskxw6w5EqeKs",

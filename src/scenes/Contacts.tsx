@@ -1,23 +1,25 @@
 import React, { FormEvent, useState, ChangeEvent, useEffect } from "react";
 import { connect } from "react-redux";
-import { Container, Table, Form, InputOnChangeData, Button, Message, Segment, Dimmer, Loader, Header } from "semantic-ui-react";
+import { Container, Table, Form, InputOnChangeData, Button, Message, Segment, Header } from "semantic-ui-react";
 import Contact from "../models/Contact";
-import { contactsLoad } from "../actions/ContactsAction";
+import { contactsLoad, contactCreate } from "../actions/ContactsAction";
 
 type Props = {
   contacts?: Contact[],
   loading: boolean,
   error?: string,
   user?: firebase.User,
-  contactsLoad: (userId: string) => void
+  contactsLoad: (userId: string) => void,
+  contactCreate: (userId: string, contact: Contact) => void
 };
 
-const Contacts = ({ contacts, error, loading, contactsLoad, user }: Props) => {
+const Contacts = ({ contacts, error, loading, contactsLoad, user, contactCreate }: Props) => {
 
-  const [form, setForm] = useState<{ [key: string]: string }>({});
+  const [form, setForm] = useState<{ [key: string]: string }>({ name: '', email: '' });
   const [formError, setFormError] = useState<{ [key: string]: string }>({});
 
   const handleChange = (e: ChangeEvent, { name, value }: InputOnChangeData) => {
+    e.preventDefault();
     setForm({ ...form, [name]: value });
   }
 
@@ -41,14 +43,23 @@ const Contacts = ({ contacts, error, loading, contactsLoad, user }: Props) => {
           ...current
         }
       }, {}));
+
+      return;
     }
+
+    const contact: Contact = {
+      email: form['email'],
+      name: form['name']
+    };
+
+    contactCreate(user!.uid, contact);
   };
 
   useEffect(() => {
     if (!contacts && user) {
       contactsLoad(user.uid);
     }
-  }, [user, contacts]);
+  }, [user, contacts, contactsLoad]);
 
   const renderError = () => {
     if (error) {
@@ -80,12 +91,6 @@ const Contacts = ({ contacts, error, loading, contactsLoad, user }: Props) => {
       {renderError()}
 
       <Segment vertical>
-        {loading &&
-          <Dimmer active>
-            <Loader>Loading</Loader>
-          </Dimmer>
-        }
-
         {contacts && contacts.length > 0 &&
           <Table celled striped>
             <Table.Header>
@@ -98,9 +103,9 @@ const Contacts = ({ contacts, error, loading, contactsLoad, user }: Props) => {
 
             <Table.Body>
               {contacts.map(contact => (
-                <Table.Row>
-                  <Table.Cell>Name</Table.Cell>
-                  <Table.Cell>Email</Table.Cell>
+                <Table.Row key={`contact_${contact.email}`}>
+                  <Table.Cell>{contact.name}</Table.Cell>
+                  <Table.Cell>{contact.email}</Table.Cell>
                   <Table.Cell collapsing>
                     <Button negative>Delete</Button>
                   </Table.Cell>
@@ -120,4 +125,4 @@ const mapStateToProps = ({ contact, auth }: any) => {
   return { loading, error, contacts, user };
 };
 
-export default connect(mapStateToProps, { contactsLoad })(Contacts);
+export default connect(mapStateToProps, { contactsLoad, contactCreate })(Contacts);

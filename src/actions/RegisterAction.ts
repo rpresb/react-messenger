@@ -1,5 +1,5 @@
-import firebase from "firebase";
-import {loginUser} from './AuthAction'
+import firebase from "firebase/app";
+import { loginUser } from './AuthAction';
 
 export const REGISTER_START = 'REGISTER_START';
 export const REGISTER_FAILED = 'REGISTER_FAILED';
@@ -20,8 +20,8 @@ export const registerUser = (email: string, password: string, repeatPassword: st
 
 const validatePassword = (password: string, repeatPassword: string) => {
   console.log(password, repeatPassword)
-  if(password !== repeatPassword) {
-    
-    throw new Error("Password mismatch")
+  if (password !== repeatPassword) {
+
+    throw new Error("Password mismatch");
   }
 } 

@@ -53,6 +53,12 @@ const Contacts = ({ contacts, error, loading, contactsLoad, user, contactCreate 
     };
 
     contactCreate(user!.uid, contact);
+    cleanForm();
+  };
+
+  const cleanForm = () => {
+    setFormError({});
+    setForm({ name: '', email: '' });
   };
 
   useEffect(() => {

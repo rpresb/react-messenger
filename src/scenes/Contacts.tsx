@@ -103,6 +103,7 @@ const Contacts = ({ contacts, error, loading, contactsLoad, user, contactCreate 
               <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
                 <Table.HeaderCell>E-mail</Table.HeaderCell>
+                <Table.HeaderCell>is registered?</Table.HeaderCell>
                 <Table.HeaderCell>Action</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -112,6 +113,7 @@ const Contacts = ({ contacts, error, loading, contactsLoad, user, contactCreate 
                 <Table.Row key={`contact_${contact.email}`}>
                   <Table.Cell>{contact.name}</Table.Cell>
                   <Table.Cell>{contact.email}</Table.Cell>
+                  <Table.Cell>{contact.exists === true ? 'Yes' : 'No'}</Table.Cell>
                   <Table.Cell collapsing>
                     <Button negative>Delete</Button>
                   </Table.Cell>

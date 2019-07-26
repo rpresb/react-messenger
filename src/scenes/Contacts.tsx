@@ -1,8 +1,8 @@
-import React, { FormEvent, useState, ChangeEvent, useEffect } from "react";
+import React, { FormEvent, useState, ChangeEvent, useEffect, MouseEvent } from "react";
 import { connect } from "react-redux";
-import { Container, Table, Form, InputOnChangeData, Button, Message, Segment, Header } from "semantic-ui-react";
+import { Container, Table, Form, InputOnChangeData, Button, Message, Segment, Header, ButtonProps } from "semantic-ui-react";
 import Contact from "../models/Contact";
-import { contactsLoad, contactCreate } from "../actions/ContactsAction";
+import { contactsLoad, contactCreate, contactDelete } from "../actions/ContactsAction";
 
 type Props = {
   contacts?: Contact[],
@@ -10,10 +10,11 @@ type Props = {
   error?: string,
   user?: firebase.User,
   contactsLoad: (userId: string) => void,
-  contactCreate: (userId: string, contact: Contact) => void
+  contactCreate: (userId: string, contact: Contact) => void,
+  contactDelete: (userId: string, contactId: string) => void
 };
 
-const Contacts = ({ contacts, error, loading, contactsLoad, user, contactCreate }: Props) => {
+const Contacts = ({ contacts, error, loading, contactsLoad, user, contactCreate, contactDelete }: Props) => {
 
   const [form, setForm] = useState<{ [key: string]: string }>({ name: '', email: '' });
   const [formError, setFormError] = useState<{ [key: string]: string }>({});
@@ -60,6 +61,11 @@ const Contacts = ({ contacts, error, loading, contactsLoad, user, contactCreate 
     setFormError({});
     setForm({ name: '', email: '' });
   };
+
+  const onDeleteContact = (e: MouseEvent, data: ButtonProps) => {
+    e.preventDefault();
+    contactDelete(user!.uid, data['data-contactid']);
+  }
 
   useEffect(() => {
     if (!contacts && user) {
@@ -115,7 +121,7 @@ const Contacts = ({ contacts, error, loading, contactsLoad, user, contactCreate 
                   <Table.Cell>{contact.email}</Table.Cell>
                   <Table.Cell>{contact.exists === true ? 'Yes' : 'No'}</Table.Cell>
                   <Table.Cell collapsing>
-                    <Button negative>Delete</Button>
+                    <Button negative onClick={onDeleteContact} data-contactid={contact.id}>Delete</Button>
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -133,4 +139,4 @@ const mapStateToProps = ({ contact, auth }: any) => {
   return { loading, error, contacts, user };
 };
 
-export default connect(mapStateToProps, { contactsLoad, contactCreate })(Contacts);
+export default connect(mapStateToProps, { contactsLoad, contactCreate, contactDelete })(Contacts);

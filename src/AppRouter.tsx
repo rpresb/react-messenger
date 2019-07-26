@@ -11,11 +11,13 @@ import NavBar from './components/NavBar';
 import PrivateRoute from './components/PrivateRoute';
 import { Container } from 'semantic-ui-react';
 import firebase from 'firebase/app';
+import { contactsLoad } from './actions/ContactsAction';
 
-const AppRouter = ({ isAppLoaded, appLoaded, loginSuccess }: any) => {
+const AppRouter = ({ isAppLoaded, appLoaded, loginSuccess, contactsLoad }: any) => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       loginSuccess(user);
+      contactsLoad(user!.uid);
     }
 
     appLoaded();
@@ -41,4 +43,4 @@ const mapStateToProps = ({ app }: any) => {
   return { isAppLoaded };
 };
 
-export default connect(mapStateToProps, { loginSuccess, appLoaded })(AppRouter);
+export default connect(mapStateToProps, { loginSuccess, appLoaded, contactsLoad })(AppRouter);
